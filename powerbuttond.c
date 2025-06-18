@@ -105,7 +105,11 @@ void do_press(const char* type) {
 
 	alarm(0);
 
+#if defined(__aarch64__)
+	snprintf(steam, sizeof(steam), "%s/.steam/root/linuxarm64/steam", home);
+#else
 	snprintf(steam, sizeof(steam), "%s/.steam/root/ubuntu12_32/steam", home);
+#endif	
 	snprintf(press, sizeof(press), "steam://%spowerpress", type);
 
 	pid_t pid;
