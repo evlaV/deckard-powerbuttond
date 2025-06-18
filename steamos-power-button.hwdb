@@ -37,4 +37,6 @@ evdev:name:AT Translated Set 2 keyboard:dmi:*svnOrangePi:*
 evdev:name:Power Button:dmi:*svnOrangePi:*
 # ZOTAC Gaming Zone
 evdev:name:Power Button:dmi:*svnZOTAC:*rnG0A1W:*
+#deckard
+evdev:name:pmic_pwrkey:*
  STEAMOS_POWER_BUTTON=1
