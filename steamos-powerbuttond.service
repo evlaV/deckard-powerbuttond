@@ -1,6 +1,6 @@
 [Unit]
 Description=Power Button daemon for SteamOS
-Requisite=deckard-steamvr-session.service
+Requisite=steamvr.service
 
 [Service]
 ExecStart=/usr/lib/hwsupport/steamos-powerbuttond
