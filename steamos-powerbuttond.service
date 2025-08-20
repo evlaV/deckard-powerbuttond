@@ -6,3 +6,6 @@ Requisite=steamvr.service
 ExecStart=/usr/lib/hwsupport/steamos-powerbuttond
 Restart=on-failure
 Slice=session.slice
+
+# Do NOT run powerbuttond on an EV1, because it only has a single button, and we don't want it to 
+ExecCondition=/bin/bash -c '[[ $(vrdevice_path model) != EV1 ]]'
