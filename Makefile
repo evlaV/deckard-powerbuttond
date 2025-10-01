@@ -34,6 +34,3 @@ install: all LICENSE
 	install -D -m 644 steamos-power-button.hwdb $(DESTDIR)/usr/lib/udev/hwdb.d/80-steamos-power-button.hwdb
 	install -d -m 755 $(DESTDIR)/usr/lib/systemd/user/deckard-steamvr-session.target.wants
 	ln -s ../steamos-powerbuttond.service $(DESTDIR)/usr/lib/systemd/user/deckard-steamvr-session.target.wants/
-
-	install -D -m 644 deckard-button-listener-for-older-bootloaders.service $(DESTDIR)/usr/lib/systemd/system/deckard-button-listener-for-older-bootloaders.service
-	install -D -m 755 deckard-button-listener-for-older-bootloaders.py $(DESTDIR)/usr/lib/powerbuttond/deckard-button-listener-for-older-bootloaders.py
