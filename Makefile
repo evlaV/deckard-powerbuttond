@@ -1,5 +1,5 @@
-LIB_CFLAGS := $(shell pkg-config --cflags libevdev libudev)
-LIB_LDFLAGS := $(shell pkg-config --libs libevdev libudev)
+LIB_CFLAGS := $(shell pkg-config --cflags libevdev libudev libsystemd)
+LIB_LDFLAGS := $(shell pkg-config --libs libevdev libudev libsystemd)
 
 CFLAGS += -Wall -Wextra $(LIB_CFLAGS)
 
