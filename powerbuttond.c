@@ -16,6 +16,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <systemd/sd-bus.h>
 
 #define MAX_DEVS 2
 
@@ -97,11 +98,52 @@ out:
 	return num_devs;
 }
 
+int preparing_for_sleep()
+{
+    sd_bus *bus = NULL;
+    sd_bus_error err = SD_BUS_ERROR_NULL;
+    int r, prep_for_sleep = 0;
+
+    r = sd_bus_open_system(&bus);
+    if (r < 0) {
+        fprintf(stderr, "dbus open fail: %s\n", strerror(-r));
+        return -1;
+    }
+
+    r = sd_bus_get_property_trivial(
+        bus,
+        "org.freedesktop.login1",
+        "/org/freedesktop/login1",
+        "org.freedesktop.login1.Manager",
+        "PreparingForSleep",
+        &err,
+        'b', &prep_for_sleep);
+
+    if (r < 0) {
+        fprintf(stderr, "dbus query fail: %s: %s\n", err.name, err.message);
+        sd_bus_error_free(&err);
+        sd_bus_unref(bus);
+        return -1;
+    }
+
+    sd_bus_unref(bus);
+
+    return prep_for_sleep;
+}
+
 void do_press(const char* type) {
 	char steam[PATH_MAX];
 	char press[32];
 	char* home = getenv("HOME");
 	char* const args[] = {steam, "-ifrunning", press, NULL};
+
+	if(preparing_for_sleep() == 1)
+	{
+		//we want to ignore this event because we either already are suspending, or currently resuming
+		//todo various cleanup stuff here -- alarms / button state??
+		printf("skipping power button push since we are already suspending or still actively resuming\n");
+		return;
+	}
 
 	alarm(0);
 
@@ -111,6 +153,8 @@ void do_press(const char* type) {
 	snprintf(steam, sizeof(steam), "%s/.steam/steam/ubuntu12_32/steam", home);
 #endif	
 	snprintf(press, sizeof(press), "steam://%spowerpress", type);
+
+	printf("submitting %s power press to steam\n",type);
 
 	pid_t pid;
 	if (posix_spawn(&pid, steam, NULL, NULL, args, environ) < 0) {
@@ -192,6 +236,7 @@ int main(int argc, char* argv[]) {
 							press_active = true;
 							alarm(1);
 						} else if (press_active) {
+							press_active = false;
 							do_press("short");
 						}
 					} else if (ev.code == KEY_LEFTMETA && ev.value == 1) {
