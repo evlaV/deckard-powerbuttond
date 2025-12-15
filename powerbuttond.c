@@ -88,6 +88,7 @@ size_t find_devs(struct libevdev* devs[]) {
 		}
 		udev_device_unref(dev);
 	}
+	fflush(stdout);
 
 out:
 	if (uenum) {
@@ -142,6 +143,7 @@ void do_press(const char* type) {
 		//we want to ignore this event because we either already are suspending, or currently resuming
 		//todo various cleanup stuff here -- alarms / button state??
 		printf("skipping power button push since we are already suspending or still actively resuming\n");
+		fflush(stdout);
 		return;
 	}
 
@@ -155,6 +157,7 @@ void do_press(const char* type) {
 	snprintf(press, sizeof(press), "steam://%spowerpress", type);
 
 	printf("submitting %s power press to steam\n",type);
+	fflush(stdout);
 
 	pid_t pid;
 	if (posix_spawn(&pid, steam, NULL, NULL, args, environ) < 0) {
