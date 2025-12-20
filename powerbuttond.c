@@ -150,7 +150,7 @@ void do_press(const char* type) {
 	alarm(0);
 
 #if defined(__aarch64__)
-	snprintf(steam, sizeof(steam), "%s/.steam/steam/linuxarm64/steam", home);
+	snprintf(steam, sizeof(steam), "%s/.steam/steam/steamrtarm64/steam", home);
 #else
 	snprintf(steam, sizeof(steam), "%s/.steam/steam/ubuntu12_32/steam", home);
 #endif	
