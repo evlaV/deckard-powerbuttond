@@ -32,5 +32,5 @@ install: all LICENSE
 	install -D -m 644 steamos-powerbuttond.service $(DESTDIR)/usr/lib/systemd/user/steamos-powerbuttond.service
 	install -D -m 644 steamos-power-button.rules $(DESTDIR)/usr/lib/udev/rules.d/70-steamos-power-button.rules
 	install -D -m 644 steamos-power-button.hwdb $(DESTDIR)/usr/lib/udev/hwdb.d/70-steamos-power-button.hwdb
-	install -d -m 755 $(DESTDIR)/usr/lib/systemd/user/deckard-steamvr-session.target.wants
-	ln -s ../steamos-powerbuttond.service $(DESTDIR)/usr/lib/systemd/user/deckard-steamvr-session.target.wants/
+	install -d -m 755 $(DESTDIR)/usr/lib/systemd/user/steamvr.service.wants
+	ln -s ../steamos-powerbuttond.service $(DESTDIR)/usr/lib/systemd/user/steamvr.service.wants/
